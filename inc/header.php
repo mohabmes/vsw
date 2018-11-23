@@ -37,7 +37,7 @@
 							<a href="inc/logout.php">Logout</a>';
 						}else{
 							echo '
-							<a href="upload.php"><img src="/Play/assets/upload.png"></a>
+							<a href="upload.php"><img src="./assets/upload.png"></a>
 							<span class="separate">|</span>
 							<a href="profile.php?username='.$_SESSION['username'].'">'.ucfirst($_SESSION['fullname']).'</a>
 							<span class="separate">|</span>

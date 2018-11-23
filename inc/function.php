@@ -48,8 +48,8 @@ function videoPreview($i){
 function adminPreview($i){
 	echo 
 	'<div class="panel">
-		<video controls name="media" poster="./media/thumbnail/'.$i['vid_loca'].'.jpg">
-			<source src="./media/video/'.$i['vid_loca'].'.mp4" type="video/mp4">
+		<video controls name="media" poster="../media/thumbnail/'.$i['vid_loca'].'.jpg">
+			<source src="../media/video/'.$i['vid_loca'].'.mp4" type="video/mp4">
 				Media Player Error.
 		</video>
 		<h3>'.$i['title'].'</h3>

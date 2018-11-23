@@ -56,10 +56,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$d = date_create();
 		$name = date_timestamp_get($d);
 		
+		if (!is_dir('./media/video/')) {
+			mkdir('./media/video/', 0755, true);         
+		}
+		if (!is_dir('./media/thumbnail/')) {
+			mkdir('./media/thumbnail/', 0755, true);         
+		}
+		
 		try{
 			//Full direction of both video & thumbnail
-			$vid_uploads_dir = '../Play/media/video/'.$name.'.mp4';
-			$thumbn_uploads_dir = '../Play/media/thumbnail/'.$name.'.jpg';
+			$vid_uploads_dir = './media/video/'.$name.'.mp4';
+			$thumbn_uploads_dir = './media/thumbnail/'.$name.'.jpg';
 			
 			//Start uploading
 			move_uploaded_file($vid_tmp_name, $vid_uploads_dir);
