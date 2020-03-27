@@ -1,67 +1,43 @@
 <?php
-require('inc/connection.php');
 require('inc/function.php');
-
-//header title
-$header = "Login";
-
-require('inc/header.php');
+require('inc/user.php');
 
 //if already Loggedin redirect to the main page
-if(loggedin()){
-	header('Location: index.php');
-}
+if(loggedin())
+	redirect_to('index');
+// echo md5('PasswordPassword');
+// exit();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-	//Filtering input
-	$username = trim(filter_input(INPUT_POST,"username",FILTER_SANITIZE_STRING));
-    $password = trim(filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING));
-	
-	//Password Hash
-	$password = md5($password);
-	
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 	//Check if empty
 	if(empty($username)|| empty($password)){
-		$error_message[] = "Please fill in the required fields: Username and Password.";
+		set_error_msg("Please fill in the required fields: Username and Password.");
+		redirect_to('login');
 	}
-	
+	//Filtering input
+	$username = trim(filter_input(INPUT_POST,"username",FILTER_SANITIZE_STRING));
+  $password = trim(filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING));
+
+	//Password Hash
+	$password = md5($password);
+
+
 	//validate username AND password
-	$user = login($username, $password);
-	if(isset($user['id'])&& !empty($user['id'])){
+	$user = new User();
+	$user->login($username, $password);
+	if(!empty($user->username)){
 		//Set cookies if its validate
-		$_SESSION['id']=$user['id'];
-		$_SESSION['username']=$user['username'];
-		$_SESSION['fullname']=$user['fullname'];
+		set_login_session($user->id, $user->username, $user->fullname);
 		//redirect to the main page
-		header('Location: index.php');
+		redirect_to('index');
 	}else{
 		//Set error msg if its invalidate
-		$error_message[] = "Invalid Username / Password, Try Again.";
+		set_error_msg("Invalid Username / Password, Try Again.");
+		redirect_to('login');
 	}
 }
-//if the error msg is set display it
-if(isset($error_message)){
-	echo '<div class="wrapper"><div class="error">'.$error_message[0].'</div></div>';
-}
-?>
 
-<div class="wrapper content">
-	<form action="login.php" method="POST" class="form">
-		<table>
-			<tr>
-				<th>Username</th>
-				<td><input type="text" name="username"></td>
-			</tr>
-			<tr>
-				<th>Password</th>
-				<td><input type="password" name="password"></td>
-			</tr>
-			<tr>
-				<th></th>
-				<td><input type="submit" value="Login"></td>
-			</tr>
-		</table>
-	</form>
-</div>
-<br><br><br><br><br>
-<?php require('inc/footer.php');?>
+load_view('login');
+?>
