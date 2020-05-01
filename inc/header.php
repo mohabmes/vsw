@@ -15,40 +15,36 @@
 		    <ul>
 				<li class="wlogo">
 					<a href="index.php"><img src="assets/play.jpg"><span>Play</span></a>
-					
+
 				</li>
-				
+
 				<li style="text-align:center">
 					<form action="search.php" method="GET">
 						<input type="text" name="s"></input>
 						<input type="submit" value="search"></input>
 					</form>
 				</li>
-				
+
 				<li style="text-align:right">
-					<?php
-						if(!loggedin() && !checkAdmin()){
-							echo '<a href="register.php">Sign Up</a>
+					<?php if(!loggedin()): ?>
+							<a href="register.php">Sign Up</a>
 							<span class="separate">|</span>
-							<a href="login.php">Login</a>';
-						}else if(checkAdmin()){
-							echo '<b><a href="admin/index.php">Admin Panel</a></b>
-							<span class="separate">|</span>
-							<a href="inc/logout.php">Logout</a>';
-						}else{
-							echo '
+							<a href="login.php">Login</a>
+					<?php else: ?>
 							<a href="upload.php"><img src="./assets/upload.png"></a>
 							<span class="separate">|</span>
-							<a href="profile.php?username='.$_SESSION['username'].'">'.ucfirst($_SESSION['fullname']).'</a>
+							<a href="profile.php?username=<?=get_session('username')?>"><?=get_session('fullname')?></a>
 							<span class="separate">|</span>
-							<a href="inc/logout.php">Logout</a>';
-						}
-					
-					?>
-					
+							<a href="logout.php">Logout</a>
+					<?php endif; ?>
 				</li>
 		     </ul>
 		</div>
     </nav>
 
 <div class="wrapper">
+<?php
+	if(get_session('error')){
+		echo '<div class="wrapper"><div class="error">'.get_error_msg().'</div></div>';
+	}
+?>
